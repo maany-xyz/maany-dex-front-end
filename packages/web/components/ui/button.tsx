@@ -27,7 +27,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-wosmongton-700 text-white-full shadow hover:bg-wosmongton-700/80",
+          "bg-wosmongton-700 text-dark-full shadow hover:bg-wosmongton-700/80",
         destructive: "bg-rust-700 shadow-sm hover:bg-rust-700/90",
         outline:
           "border-wosmongton-400 border-2 bg-transparent shadow-sm hover:bg-wosmongton-400 hover:text-white-full",
@@ -41,10 +41,10 @@ const buttonVariants = cva(
         link: "text-white-full underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-14 px-6 py-2 rounded-xl",
-        sm: "h-6 py-1 px-1.5 rounded-md text-caption",
+        default: "h-14 px-6 py-2 rounded-full",
+        sm: "h-6 py-1 px-1.5 rounded-full text-caption",
         xsm: "h-8 px-3 py-1.5 rounded-full",
-        md: "h-10 py-2 px-3 rounded-xl",
+        md: "h-10 py-2 px-3 rounded-full",
         "lg-full": "h-12 py-3 rounded-full",
         "sm-icon": "h-8 w-8 rounded-full",
         icon: "h-12 w-12 rounded-full",
