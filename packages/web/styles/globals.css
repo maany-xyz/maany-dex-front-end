@@ -71,7 +71,7 @@
   }
 
   .MBodyXL {
-     font-family: MaanyMedium;
+     font-family: MaanyMedium, ui-sans-serif, system-ui;
      font-weight: 500;
      font-size: 2rem;
      line-height: 100%;
