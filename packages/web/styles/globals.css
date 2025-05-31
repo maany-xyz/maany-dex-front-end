@@ -5,6 +5,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'MaanySemiBold';
+  src: url('./fonts/PPRightGrotesk-Medium.otf') format('opentype'),
+  url('./fonts/PPRightGrotesk-Medium.otf')  format('opentype');
+}
+@font-face {
+  font-family: 'MaanyMedium';
+  src: url('./fonts/PPRightGrotesk-Regular.ttf') format('truetype'),
+  url('./fonts/PPRightGrotesk-Regular.ttf')  format('truetype');
+}
+@font-face {
+  font-family: 'MaanyRegular';
+  src: url('./fonts/PPRightGroteskText-CompactMedium.ttf') format('truetype'),
+  url('./fonts/PPRightGroteskText-CompactMedium.ttf')  format('truetype');
+}
+@font-face {
+  font-family: 'MaanyLight';
+  src: url('./fonts/PPRightGrotesk-Light.otf') format('truetype'),
+  url('./fonts/PPRightGrotesk-Light.otf')  format('truetype');
+}
+
 @layer base {
   ::-webkit-scrollbar {
     width: 8px;
@@ -26,14 +47,35 @@
     @apply absolute -left-4 -right-4 bottom-0 top-0 bg-gradient-token-details-shadow content-[""];
   }
 }
+/*Fonts*/
+.MaanyRegular {
+  font-family: MaanyRegular, ui-sans-serif, system-ui;
+}
+.MaanyMedium {
+  font-family: MaanyMedium, ui-sans-serif, system-ui;
+}
+.MaanySemiBold {
+  font-family: MaanySemiBold, ui-sans-serif, system-ui;
+}
+.MaanyLight {
+  font-family: MaanyLight, ui-sans-serif, system-ui;
+}
 
 @layer components {
   html {
-    font-family: Inter, ui-sans-serif, system-ui;
+    font-family: MaanyRegular, ui-sans-serif, system-ui;
     @apply text-white-full;
   }
   body {
-    @apply bg-osmoverse-1000;
+    @apply bg-osmoverse-900;
+  }
+
+  .MBodyXL {
+     font-family: MaanyMedium;
+     font-weight: 500;
+     font-size: 2rem;
+     line-height: 100%;
+     letter-spacing: 0px;
   }
 
   h1 {
