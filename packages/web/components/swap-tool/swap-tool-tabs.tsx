@@ -46,24 +46,27 @@ export const SwapToolTabs: FunctionComponent<SwapToolTabsProps> = ({
   );
 
   return (
-    <div className="flex w-max items-center gap-px rounded-3xl border border-osmoverse-700">
+    <div className="flex w-max items-center gap-1">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.value;
         return (
           <button
             key={`swap-tab-${tab.value}`}
             onClick={() => setTab(tab.value)}
+            style={{
+              fontWeight: "400",
+            }}
             className={classNames(
-              "sm:body2 -m-px rounded-3xl px-4 py-3 transition-colors sm:px-3 sm:py-1.5",
+              "sm:body2 -m-px rounded-3xl px-6 py-3 transition-colors sm:px-3 sm:py-1.5 MaanyLight  border border-osmoverse-400",
               {
-                "hover:bg-osmoverse-850": !isActive,
-                "bg-wosmongton-100": isActive,
+                "hover:bg-osmoverse-900": !isActive,
+                "bg-osmoverse-400": isActive,
               }
             )}
           >
             <p
-              className={classNames("font-semibold", {
-                "text-wosmongton-100": !isActive,
+              className={classNames("", {
+                "text-osmoverse-400": !isActive,
                 "text-osmoverse-900": isActive,
               })}
             >

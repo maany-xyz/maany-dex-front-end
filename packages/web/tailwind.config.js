@@ -35,7 +35,7 @@ module.exports = {
         400: "#f7ffc4",
         500: "#f3ffb0",
         600: "#ecff7d",
-        700: "#DEFF00",  // your new base
+        700: "#DEFF00", // your new base
         800: "#B2CC00",
         900: "#86A200",
       },

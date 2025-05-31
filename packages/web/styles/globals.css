@@ -6,24 +6,24 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'MaanySemiBold';
-  src: url('./fonts/PPRightGrotesk-Medium.otf') format('opentype'),
-  url('./fonts/PPRightGrotesk-Medium.otf')  format('opentype');
+  font-family: "MaanySemiBold";
+  src: url("./fonts/PPRightGrotesk-Medium.otf") format("opentype"),
+    url("./fonts/PPRightGrotesk-Medium.otf") format("opentype");
 }
 @font-face {
-  font-family: 'MaanyMedium';
-  src: url('./fonts/PPRightGrotesk-Regular.ttf') format('truetype'),
-  url('./fonts/PPRightGrotesk-Regular.ttf')  format('truetype');
+  font-family: "MaanyMedium";
+  src: url("./fonts/PPRightGrotesk-Regular.ttf") format("truetype"),
+    url("./fonts/PPRightGrotesk-Regular.ttf") format("truetype");
 }
 @font-face {
-  font-family: 'MaanyRegular';
-  src: url('./fonts/PPRightGroteskText-CompactMedium.ttf') format('truetype'),
-  url('./fonts/PPRightGroteskText-CompactMedium.ttf')  format('truetype');
+  font-family: "MaanyRegular";
+  src: url("./fonts/PPRightGroteskText-CompactMedium.ttf") format("truetype"),
+    url("./fonts/PPRightGroteskText-CompactMedium.ttf") format("truetype");
 }
 @font-face {
-  font-family: 'MaanyLight';
-  src: url('./fonts/PPRightGrotesk-Light.otf') format('truetype'),
-  url('./fonts/PPRightGrotesk-Light.otf')  format('truetype');
+  font-family: "MaanyLight";
+  src: url("./fonts/PPRightGrotesk-Light.otf") format("truetype"),
+    url("./fonts/PPRightGrotesk-Light.otf") format("truetype");
 }
 
 @layer base {
@@ -71,11 +71,11 @@
   }
 
   .MBodyXL {
-     font-family: MaanyMedium, ui-sans-serif, system-ui;
-     font-weight: 500;
-     font-size: 2rem;
-     line-height: 100%;
-     letter-spacing: 0px;
+    font-family: MaanyMedium, ui-sans-serif, system-ui;
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 100%;
+    letter-spacing: 0px;
   }
 
   h1 {

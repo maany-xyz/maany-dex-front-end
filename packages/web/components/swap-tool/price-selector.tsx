@@ -221,7 +221,7 @@ export const PriceSelector = memo(
                 <div className="flex flex-1 items-center justify-between">
                   {quoteAsset && (
                     <div className="flex items-center gap-1 transition-opacity sm:gap-0">
-                      <span className="body2 sm:caption whitespace-nowrap text-osmoverse-300">
+                      <span className="body2 sm:caption whitespace-nowrap text-osmoverse-800">
                         {tab === "buy"
                           ? t("limitOrders.payWith")
                           : t("limitOrders.receive")}
@@ -240,13 +240,13 @@ export const PriceSelector = memo(
                             priority
                           />
                         )}
-                        <span className="md:caption body2 text-left">
+                        <span className="md:caption body2 text-left text-osmoverse-800">
                           {quoteAsset.symbol}
                         </span>
                         <Icon
                           id="chevron-down"
                           className={classNames(
-                            "h-[7px] w-3 text-wosmongton-200 transition-transform",
+                            "h-[7px] w-3 transition-transform text-osmoverse-800",
                             {
                               "rotate-180": open,
                             }
@@ -457,7 +457,7 @@ const SelectableQuotes = observer(
                   width={40}
                   height={40}
                 />
-                <div className="flex flex-col gap-1 text-left">
+                <div className="flex flex-col MaanyLight gap-1 text-left">
                   <p>{name}</p>
                   <small className="text-sm leading-5 text-osmoverse-300">
                     {symbol}

@@ -106,7 +106,7 @@ export const OrderTypeSelector = ({
   );
 
   return (
-    <div className="flex w-max items-center gap-px rounded-3xl border border-osmoverse-700 ">
+    <div className="flex w-max items-center gap-px rounded-3xl border border-osmoverse-400 ">
       {uiTradeTypes.map(({ disabled, id, title }) => {
         const isSelected = type === id;
 
@@ -125,14 +125,15 @@ export const OrderTypeSelector = ({
                 "sm:body2 -m-px rounded-[22px] px-4 py-3 transition-colors disabled:pointer-events-none disabled:opacity-50 sm:px-3 sm:py-1.5",
                 {
                   "hover:bg-osmoverse-850": !isSelected,
-                  "bg-osmoverse-700": isSelected,
+                  "bg-osmoverse-400": isSelected,
                 }
               )}
               disabled={disabled}
             >
               <p
-                className={classNames("font-semibold", {
-                  "text-wosmongton-100": !isSelected,
+                className={classNames("MaanyLight", {
+                  "text-osmoverse-400": !isSelected,
+                  "text-osmoverse-900": isSelected,
                 })}
               >
                 {title}

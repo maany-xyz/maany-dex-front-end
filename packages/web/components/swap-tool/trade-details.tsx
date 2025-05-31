@@ -77,7 +77,7 @@ export const TradeDetails = observer(
     }, [makerFee]);
 
     return (
-      <div className="flex w-full">
+      <div className="flex w-full MaanyLight">
         <Disclosure>
           {({ open, close }) => (
             <div
@@ -170,7 +170,7 @@ export const TradeDetails = observer(
                     </GenericDisclaimer>
                   </Disclosure.Button>
                 </div>
-                <Disclosure.Panel className="body2 sm:caption flex flex-col text-osmoverse-300">
+                <Disclosure.Panel className="body2 sm:caption flex flex-col text-osmoverse-400 MaanyLight">
                   {type === "market" ? (
                     <RecapRow
                       left={

@@ -17,7 +17,6 @@ import {
 import { useMeasure, useMount } from "react-use";
 
 import { isOverspendErrorMessage } from "~/components/alert/prettify";
-import { Icon } from "~/components/assets";
 import {
   AssetFieldset,
   AssetFieldsetFooter,
@@ -27,6 +26,7 @@ import {
   AssetFieldsetInput,
   AssetFieldsetTokenSelector,
 } from "~/components/complex/asset-fieldset";
+import { ExchangeIcon } from "~/components/icons/exchange-icon";
 import { tError } from "~/components/localization";
 import { TradeDetails } from "~/components/swap-tool/trade-details";
 import { GenericDisclaimer } from "~/components/tooltip/generic-disclaimer";
@@ -350,14 +350,12 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
     return (
       <>
         <div ref={containerRef} className="relative flex flex-col">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 bg-osmoverse-400 rounded-3xl px-[24px]">
             <div className="relative flex flex-col">
               <AssetFieldset>
                 <AssetFieldsetHeader>
                   <AssetFieldsetHeaderLabel>
-                    <span className="body2 py-1.5 text-osmoverse-300">
-                      From
-                    </span>
+                    <span className="body2 py-1.5 text-black">From</span>
                   </AssetFieldsetHeaderLabel>
                   <AssetFieldsetHeaderBalance
                     onMax={() => {
@@ -399,6 +397,7 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
                 <div className="flex items-center justify-between py-3">
                   <AssetFieldsetInput
                     ref={fromAmountInputEl}
+                    inputClassName={"placeholder:text-black text-black"}
                     inputValue={
                       quoteType === "in-given-out" &&
                       swapState.inAmountInput.amount
@@ -452,9 +451,9 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
                 <AssetFieldsetFooter>
                   <span
                     className={classNames(
-                      "body2 h-5 text-osmoverse-300 transition-all",
+                      "body2 h-5 text-black transition-all",
                       {
-                        "!text-osmoverse-600":
+                        "!text-osmoverse-800":
                           !swapState.inAmountInput?.fiatValue,
                       }
                     )}
@@ -473,11 +472,11 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
               </AssetFieldset>
               <div className="relative flex w-full">
                 <div
-                  className="absolute top-0 h-0.5 -translate-x-5 bg-[#3C356D4A]"
-                  style={{ width: width + 40 }}
+                  className="absolute top-0 h-0.5 left-0 -translate-x-6 bg-osmoverse-900"
+                  style={{ width: width + 60 }}
                 />
                 <button
-                  className="group absolute top-1/2 left-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-solid border-[#3C356D4A] bg-osmoverse-900"
+                  className="group absolute top-1/2 left-1/2 flex w-[52px] h-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-solid border-[#3C356D4A] bg-osmoverse-900"
                   onClick={() => {
                     const inAmount = swapState.inAmountInput.inputAmount;
                     const outAmount = swapState.outAmountInput.inputAmount;
@@ -498,16 +497,13 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
                     }
                   }}
                 >
-                  <Icon
-                    id="switch"
-                    className="h-6 w-6 text-wosmongton-200 transition-transform group-hover:rotate-180"
-                  />
+                  <ExchangeIcon className="h-6 w-6 text-wosmongton-200 transition-transform group-hover:rotate-180" />
                 </button>
               </div>
               <AssetFieldset>
                 <AssetFieldsetHeader>
                   <AssetFieldsetHeaderLabel>
-                    <span className="body2 py-1.5 text-osmoverse-300">
+                    <span className="body2 py-1.5 text-black">
                       {t("assets.transfer.to")}
                     </span>
                   </AssetFieldsetHeaderLabel>
@@ -515,6 +511,7 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
                 <div className="flex items-center justify-between py-3">
                   <AssetFieldsetInput
                     ref={toAmountInputEl}
+                    inputClassName={"placeholder:text-black text-black"}
                     wrapperClassNames={classNames({
                       "opacity-50":
                         quoteType === "out-given-in" && isSwapToolLoading,
@@ -567,9 +564,9 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
                 <AssetFieldsetFooter>
                   <div
                     className={classNames(
-                      "body2 flex h-5 text-osmoverse-300 transition-all",
+                      "body2 flex h-5 text-black transition-all",
                       {
-                        "!text-osmoverse-600": swapState.tokenOutFiatValue
+                        "!text-osmoverse-800": swapState.tokenOutFiatValue
                           ?.toDec()
                           .isZero(),
                       }
@@ -596,7 +593,7 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
                               "opacity-100": swapState.tokenOutFiatValue
                                 ?.toDec()
                                 .gt(new Dec(0)),
-                              "text-rust-400": showOutputDifferenceWarning,
+                              "text-rust-800": showOutputDifferenceWarning,
                               "text-osmoverse-600":
                                 !showOutputDifferenceWarning,
                               hidden: outputDifference
@@ -621,7 +618,7 @@ export const SwapTool: FunctionComponent<SwapToolProps> = observer(
             </div>
           </div>
           {swapButton ?? (
-            <div className="flex w-full pb-3">
+            <div className="flex w-full pb-3 mt-3">
               <Button
                 disabled={
                   isSendingTx ||

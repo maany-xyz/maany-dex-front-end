@@ -672,156 +672,161 @@ export const PlaceLimitTool: FunctionComponent<PlaceLimitToolProps> = observer(
     return (
       <>
         <div>
-          <AssetFieldset>
-            <AssetFieldsetHeader>
-              <AssetFieldsetHeaderLabel>
-                <span
-                  className={classNames("body2 sm:caption text-osmoverse-300", {
-                    "text-rust-400": errorDisplay,
-                  })}
-                >
-                  {errorDisplay ? (
-                    errorDisplay
-                  ) : (
-                    <>
-                      {t("limitOrders.enterAnAmountTo")}{" "}
-                      <span className="sm:hidden">
-                        {orderDirection === "bid"
-                          ? t("limitOrders.toBuy").toLowerCase()
-                          : t("limitOrders.toSell").toLowerCase()}
-                      </span>
-                    </>
-                  )}
-                </span>
-              </AssetFieldsetHeaderLabel>
-              <AssetFieldsetHeaderBalance
-                availableBalance={
-                  focused === "fiat" || tab === "buy"
-                    ? formatFiatPrice(
-                        fiatBalance ?? new PricePretty(DEFAULT_VS_CURRENCY, "0")
-                      )
-                    : formatPretty(tokenBalance ?? new Dec(0), {
-                        minimumSignificantDigits: 6,
-                        maximumSignificantDigits: 6,
-                        maxDecimals: 10,
-                        notation: "standard",
-                      })
-                }
-                onMax={toggleMax}
-                openAddFundsModal={openAddFundsModal}
-                showAddFundsButton={!hasFunds}
-              />
-            </AssetFieldsetHeader>
-            <div className="flex items-center justify-between py-3 ">
-              <AssetFieldsetInput
-                page={page}
-                inputPrefix={
-                  focused === "fiat" && (
-                    <span
-                      className={classNames({
-                        "text-osmoverse-600": inputValue === "",
-                      })}
-                    >
-                      {isInputLessThanOneCent && "<"}$
-                    </span>
-                  )
-                }
-                ref={inputRef}
-                inputValue={
-                  isInputLessThanOneCent && focused === "fiat"
-                    ? "0.01"
-                    : inputValue
-                }
-                onInputChange={(e) => setAmountSafe(focused, e.target.value)}
-                data-testid={`trade-input-${type}`}
-              />
-              <AssetFieldsetTokenSelector
-                page={page}
-                onSelect={setBase}
-                selectableAssets={selectableBaseAssets}
-                orderDirection={orderDirection}
-                selectedCoinDenom={swapState.baseAsset?.coinDenom}
-                selectedCoinImageUrl={swapState.baseAsset?.coinImageUrl}
-                fetchNextPageAssets={swapState.marketState.fetchNextPageAssets}
-                hasNextPageAssets={swapState.marketState.hasNextPageAssets}
-                isFetchingNextPageAssets={
-                  swapState.marketState.isFetchingNextPageAssets
-                }
-                isLoadingSelectAssets={
-                  swapState.marketState.isLoadingSelectAssets
-                }
-                data-testid="token-in"
-                setAssetQueryInput={swapState.marketState.setAssetsQueryInput}
-                assetQueryInput={swapState.marketState.assetsQueryInput}
-              />
-            </div>
-            <AssetFieldsetFooter>
-              <button
-                type="button"
-                className="inline-flex min-h-[2rem] flex-1 items-center gap-2 text-start disabled:pointer-events-none disabled:cursor-default"
-                onClick={() => {
-                  setFocused((p) => (p === "fiat" ? "token" : "fiat"));
-                  if (inputRef.current) {
-                    inputRef.current.focus();
-                  }
-                }}
-                disabled={!featureFlags.inGivenOut && type === "market"}
-              >
-                {(featureFlags.inGivenOut || type === "limit") && (
-                  <Icon
-                    id="switch"
-                    width={16}
-                    height={16}
-                    className="text-wosmongton-300"
-                  />
-                )}
-                <span className="body2 sm:caption flex text-wosmongton-300 transition-opacity sm:my-px sm:py-2">
-                  {nonFocusedDisplayAmount || "0"}{" "}
-                  {focused === "fiat" && (
-                    <span className="ml-1">
-                      {swapState.baseAsset?.coinDenom}
-                    </span>
-                  )}{" "}
-                  {type === "market" &&
-                    swapState.marketState.quote?.priceImpactTokenOut && (
-                      <GenericDisclaimer
-                        title={t("tradeDetails.outputDifference.header")}
-                        body={t("tradeDetails.outputDifference.content")}
-                        disabled={swapState.marketState.quote?.priceImpactTokenOut
-                          .toDec()
-                          .lt(new Dec(-0.01))}
-                        childWrapperClassName={classNames(
-                          "ml-1 text-osmoverse-500 !cursor-pointer !pointer-events-auto",
-                          {
-                            hidden:
-                              swapState.marketState.quote?.priceImpactTokenOut
-                                .toDec()
-                                .lt(new Dec(-0.01)),
-                          }
-                        )}
-                        tooltipClassName="!cursor-pointer"
-                      >
-                        &#40;-
-                        {formatPretty(
-                          swapState.marketState.quote?.priceImpactTokenOut
-                        )}
-                        &#41;
-                      </GenericDisclaimer>
+          <div className={"bg-osmoverse-400 rounded-3xl py-1.5 px-6"}>
+            <AssetFieldset>
+              <AssetFieldsetHeader>
+                <AssetFieldsetHeaderLabel>
+                  <span
+                    className={classNames(
+                      "body2 sm:caption text-osmoverse-900",
+                      {
+                        "text-rust-800": errorDisplay,
+                      }
                     )}
-                </span>
-              </button>
-              <PriceSelector
-                initialBaseDenom={initialBaseDenom}
-                initialQuoteDenom={initialQuoteDenom}
+                  >
+                    {errorDisplay ? (
+                      errorDisplay
+                    ) : (
+                      <>
+                        {t("limitOrders.enterAnAmountTo")}{" "}
+                        <span className="sm:hidden">
+                          {orderDirection === "bid"
+                            ? t("limitOrders.toBuy").toLowerCase()
+                            : t("limitOrders.toSell").toLowerCase()}
+                        </span>
+                      </>
+                    )}
+                  </span>
+                </AssetFieldsetHeaderLabel>
+                <AssetFieldsetHeaderBalance
+                  availableBalance={
+                    focused === "fiat" || tab === "buy"
+                      ? formatFiatPrice(
+                          fiatBalance ??
+                            new PricePretty(DEFAULT_VS_CURRENCY, "0")
+                        )
+                      : formatPretty(tokenBalance ?? new Dec(0), {
+                          minimumSignificantDigits: 6,
+                          maximumSignificantDigits: 6,
+                          maxDecimals: 10,
+                          notation: "standard",
+                        })
+                  }
+                  onMax={toggleMax}
+                  openAddFundsModal={openAddFundsModal}
+                  showAddFundsButton={!hasFunds}
+                />
+              </AssetFieldsetHeader>
+              <div className="flex items-center justify-between py-3">
+                <AssetFieldsetInput
+                  inputClassName={"placeholder:text-black text-black"}
+                  page={page}
+                  inputPrefix={
+                    focused === "fiat" && (
+                      <span className={"text-osmoverse-900"}>
+                        {isInputLessThanOneCent && "<"}$
+                      </span>
+                    )
+                  }
+                  ref={inputRef}
+                  inputValue={
+                    isInputLessThanOneCent && focused === "fiat"
+                      ? "0.01"
+                      : inputValue
+                  }
+                  onInputChange={(e) => setAmountSafe(focused, e.target.value)}
+                  data-testid={`trade-input-${type}`}
+                />
+                <AssetFieldsetTokenSelector
+                  page={page}
+                  onSelect={setBase}
+                  selectableAssets={selectableBaseAssets}
+                  orderDirection={orderDirection}
+                  selectedCoinDenom={swapState.baseAsset?.coinDenom}
+                  selectedCoinImageUrl={swapState.baseAsset?.coinImageUrl}
+                  fetchNextPageAssets={
+                    swapState.marketState.fetchNextPageAssets
+                  }
+                  hasNextPageAssets={swapState.marketState.hasNextPageAssets}
+                  isFetchingNextPageAssets={
+                    swapState.marketState.isFetchingNextPageAssets
+                  }
+                  isLoadingSelectAssets={
+                    swapState.marketState.isLoadingSelectAssets
+                  }
+                  data-testid="token-in"
+                  setAssetQueryInput={swapState.marketState.setAssetsQueryInput}
+                  assetQueryInput={swapState.marketState.assetsQueryInput}
+                />
+              </div>
+              <AssetFieldsetFooter>
+                <button
+                  type="button"
+                  className="inline-flex min-h-[2rem] flex-1 items-center gap-2 text-start disabled:pointer-events-none disabled:cursor-default"
+                  onClick={() => {
+                    setFocused((p) => (p === "fiat" ? "token" : "fiat"));
+                    if (inputRef.current) {
+                      inputRef.current.focus();
+                    }
+                  }}
+                  disabled={!featureFlags.inGivenOut && type === "market"}
+                >
+                  {(featureFlags.inGivenOut || type === "limit") && (
+                    <Icon
+                      id="switch"
+                      width={16}
+                      height={16}
+                      className="text-wosmongton-300"
+                    />
+                  )}
+                  <span className="body2 sm:caption flex text-osmoverse-900 transition-opacity sm:my-px sm:py-2">
+                    {nonFocusedDisplayAmount || "0"}{" "}
+                    {focused === "fiat" && (
+                      <span className="ml-1">
+                        {swapState.baseAsset?.coinDenom}
+                      </span>
+                    )}{" "}
+                    {type === "market" &&
+                      swapState.marketState.quote?.priceImpactTokenOut && (
+                        <GenericDisclaimer
+                          title={t("tradeDetails.outputDifference.header")}
+                          body={t("tradeDetails.outputDifference.content")}
+                          disabled={swapState.marketState.quote?.priceImpactTokenOut
+                            .toDec()
+                            .lt(new Dec(-0.01))}
+                          childWrapperClassName={classNames(
+                            "ml-1 text-osmoverse-500 !cursor-pointer !pointer-events-auto",
+                            {
+                              hidden:
+                                swapState.marketState.quote?.priceImpactTokenOut
+                                  .toDec()
+                                  .lt(new Dec(-0.01)),
+                            }
+                          )}
+                          tooltipClassName="!cursor-pointer"
+                        >
+                          &#40;-
+                          {formatPretty(
+                            swapState.marketState.quote?.priceImpactTokenOut
+                          )}
+                          &#41;
+                        </GenericDisclaimer>
+                      )}
+                  </span>
+                </button>
+                <PriceSelector
+                  initialBaseDenom={initialBaseDenom}
+                  initialQuoteDenom={initialQuoteDenom}
+                />
+              </AssetFieldsetFooter>
+            </AssetFieldset>
+            {type === "limit" && (
+              <LimitPriceSelector
+                swapState={swapState}
+                orderDirection={orderDirection}
               />
-            </AssetFieldsetFooter>
-          </AssetFieldset>
-          {type === "limit" && (
-            <LimitPriceSelector
-              swapState={swapState}
-              orderDirection={orderDirection}
-            />
-          )}
+            )}
+          </div>
           <div className="flex w-full flex-col py-3">
             {!account?.isWalletConnected ? (
               <Button
