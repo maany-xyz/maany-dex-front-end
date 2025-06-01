@@ -13,14 +13,16 @@ export const Icon: FunctionComponent<
     id: SpriteIconId;
     label?: string;
     className?: string;
+    width?: number | string;
+    height?: number | string;
   }
 > = (props) => {
   const { id, label, className, ...rest } = props;
   return (
     <>
       <svg
-        width="24"
-        height="24"
+        width={props.width || "24"}
+        height={props.height || "24"}
         className={classNames("fill-none", className)}
         {...rest}
       >

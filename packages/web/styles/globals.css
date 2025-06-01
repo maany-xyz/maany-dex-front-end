@@ -84,6 +84,21 @@
     line-height: 100%;
     letter-spacing: 0;
   }
+  .MH4 {
+    font-family: MaanyMedium, ui-sans-serif, system-ui;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 90%;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
+  .MBodyS {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0;
+    vertical-align: middle;
+  }
   h1 {
     @apply text-h1 font-h1;
   }

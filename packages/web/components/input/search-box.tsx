@@ -17,7 +17,7 @@ import { CustomClasses, Disableable, InputProps } from "~/components/types";
 import { useTranslation } from "~/hooks";
 
 const searchBoxClasses = cva(
-  "flex flex-nowrap items-center group justify-between gap-3 bg-osmoverse-825 transition-colors ease-out duration-200 group-focus-within:bg-osmoverse-800",
+  "flex flex-nowrap items-center group justify-between gap-3 bg-osmoverse-300/5 transition-colors ease-out duration-200 group-focus-within:bg-osmoverse-800",
   {
     variants: {
       /**
@@ -31,12 +31,14 @@ const searchBoxClasses = cva(
        * - letter spacing
        */
       size: {
-        small: "h-10 pl-5 pr-1 w-max [&_input]:text-body2 [&_input]:font-body2",
+        small:
+          "h-10 pl-3.5 pr-1 w-max [&_input]:text-body2 [&_input]:font-body2",
         medium:
-          "h-12 pl-5 pr-2 w-max [&_input]:text-body2 [&_input]:font-body2",
-        large: "h-14 pl-5 pr-3 w-max [&_input]:text-body1 [&_input]:font-body2",
-        long: "h-14 pl-5 pr-3 w-80 [&_input]:text-body1 [&_input]:font-body2",
-        full: "h-14 pl-5 pr-3 w-full [&_input]:text-body1 [&_input]:font-body2",
+          "h-12 pl-3.5 pr-2 w-max [&_input]:text-body2 [&_input]:font-body2",
+        large:
+          "h-14 pl-3.5 pr-3 w-max [&_input]:text-body1 [&_input]:font-body2",
+        long: "h-14 pl-3.5 pr-3 w-80 [&_input]:text-body1 [&_input]:font-body2",
+        full: "h-14 pl-3.5 pr-3 w-full [&_input]:text-body1 [&_input]:font-body2",
       },
       variant: {
         default: "rounded-full",
@@ -113,14 +115,14 @@ export const SearchBox = forwardRef<HTMLInputElement, SearchBoxProps>(
           className
         )}
       >
-        <div className="h-6 w-6 shrink-0 text-wosmongton-200 transition-colors duration-200 ease-out group-focus-within:text-wosmongton-100">
-          <Icon id="search" />
+        <div className="h-4.5 w-3 mr-1 shrink-0 text-osmoverse-400 transition-colors duration-200 ease-out group-focus-within:text-wosmongton-100">
+          <Icon width={18} height={18} id="search" />
         </div>
         <label htmlFor="search-input" className="shrink grow">
           <input
             id="search-input"
             ref={ref}
-            className="h-full w-full appearance-none bg-transparent tracking-wider placeholder:font-medium placeholder:text-osmoverse-500 group-focus-within:placeholder:text-osmoverse-600"
+            className="h-full w-full appearance-none bg-transparent tracking-wider placeholder:font-medium placeholder:text-osmoverse-400 group-focus-within:placeholder:text-osmoverse-600"
             defaultValue={_debounce ? currentValue : undefined}
             value={_debounce ? undefined : currentValue}
             type={type ?? "text"}

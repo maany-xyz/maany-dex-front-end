@@ -214,16 +214,16 @@ const MainLayoutWrapper: FunctionComponent<{
         selectionTest: /\/$/,
       },
       {
-        label: t("menu.portfolio"),
-        link: "/portfolio",
-        icon: <span>/</span>,
-        selectionTest: /\/portfolio/,
-      },
-      {
         label: t("menu.assets"),
         link: "/assets",
         icon: <span>/</span>,
         selectionTest: /\/assets/,
+      },
+      {
+        label: t("menu.portfolio"),
+        link: "/portfolio",
+        icon: <span>/</span>,
+        selectionTest: /\/portfolio/,
       },
       flags.earnPage
         ? {
