@@ -46,3 +46,7 @@ export const MaanyColors = {
   },
   GRAY_TIME: "#444444",
 };
+
+export const MaanyDimensions = {
+  navbarHeight: 52,
+};

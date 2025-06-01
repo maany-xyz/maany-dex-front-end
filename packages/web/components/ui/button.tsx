@@ -2,7 +2,6 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import classNames from "classnames";
 import * as React from "react";
-import { PropsWithChildren } from "react";
 import {
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
@@ -11,6 +10,7 @@ import {
   forwardRef,
   FunctionComponent,
   isValidElement,
+  PropsWithChildren,
   ReactNode,
 } from "react";
 
@@ -104,6 +104,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                   loadingText
                 )}
               </>
+            ) : !!props?.title ? (
+              <span className={"MH7"}>{props.title}</span>
             ) : (
               props.children
             )}

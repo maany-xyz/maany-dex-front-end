@@ -1,6 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const defaultTheme = require("tailwindcss/defaultTheme");
 
+const NavbarHeight = 52; // px
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -232,9 +234,9 @@ module.exports = {
     },
     extend: {
       height: {
-        navbar: "72px",
+        navbar: NavbarHeight + "px",
         "navbar-mobile": "65px",
-        content: "calc(100vh - 72px)",
+        content: "calc(100vh - " + NavbarHeight + "px)",
         "content-mobile": "calc(100vh - 58px)",
       },
       flex: {
@@ -258,9 +260,9 @@ module.exports = {
         },
       },
       spacing: {
-        navbar: "72px",
+        navbar: NavbarHeight + "px",
         "navbar-mobile": "65px",
-        sidebar: "14.58rem",
+        sidebar: "19rem", // to px: 304px
         "mobile-header": "6rem",
         "rewards-w": "108px",
         0.25: "1px",

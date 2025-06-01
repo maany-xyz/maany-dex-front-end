@@ -15,9 +15,10 @@ import utc from "dayjs/plugin/utc";
 import { ProviderConfig, withLDProvider } from "launchdarkly-react-client-sdk";
 import { enableStaticRendering, observer } from "mobx-react-lite";
 import type { AppProps } from "next/app";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import {
+import React, {
   ComponentType,
   FunctionComponent,
   ReactNode,
@@ -69,8 +70,6 @@ dayjs.updateLocale("ko", dayjsLocaleKo);
 enableStaticRendering(typeof window === "undefined");
 
 const DEFAULT_LANGUAGE = "en";
-
-import dynamic from "next/dynamic";
 
 const MoonPayProvider = dynamic(
   () => import("@moonpay/moonpay-react").then((mod) => mod.MoonPayProvider),
@@ -172,7 +171,7 @@ const MainLayoutWrapper: FunctionComponent<{
               openModal: onOpenLeavingOsmosisToMars,
             });
           },
-          icon: <Icon id="margin" className="h-6 w-6" />,
+          icon: <span>/</span>,
           amplitudeEvent: [EventName.Sidebar.marginClicked] as AmplitudeEvent,
           secondaryLogo: (
             <Image
@@ -193,7 +192,7 @@ const MainLayoutWrapper: FunctionComponent<{
               openModal: onOpenLeavingOsmosisToLevana,
             });
           },
-          icon: <Icon id="perps" className="h-6 w-6" />,
+          icon: <span>/</span>,
           amplitudeEvent: [EventName.Sidebar.perpsClicked] as AmplitudeEvent,
           secondaryLogo: (
             <Image
@@ -212,26 +211,26 @@ const MainLayoutWrapper: FunctionComponent<{
       {
         label: t("limitOrders.trade"),
         link: "/",
-        icon: <Icon id="trade" className="h-6 w-6" />,
+        icon: <span>/</span>,
         selectionTest: /\/$/,
       },
       {
         label: t("menu.portfolio"),
         link: "/portfolio",
-        icon: <Icon id="portfolio" className="h-6 w-6" />,
+        icon: <span>/</span>,
         selectionTest: /\/portfolio/,
       },
       {
         label: t("menu.assets"),
         link: "/assets",
-        icon: <Icon id="assets" className="h-6 w-6" />,
+        icon: <span>/</span>,
         selectionTest: /\/assets/,
       },
       flags.earnPage
         ? {
             label: t("earnPage.title"),
             link: "/earn",
-            icon: <Icon id="earn" className="h-6 w-6" />,
+            icon: <span>/</span>,
             selectionTest: /\/earn/,
           }
         : null,
@@ -239,7 +238,7 @@ const MainLayoutWrapper: FunctionComponent<{
         ? {
             label: t("menu.stake"),
             link: "/stake",
-            icon: <Icon id="ticket" className="h-6 w-6" />,
+            icon: <span>/</span>,
             selectionTest: /\/stake/,
             amplitudeEvent: [EventName.Sidebar.stakeClicked] as AmplitudeEvent,
           }
@@ -255,19 +254,19 @@ const MainLayoutWrapper: FunctionComponent<{
       {
         label: t("menu.pools"),
         link: "/pools",
-        icon: <Icon id="pool" className="h-6 w-6" />,
+        icon: <span>/</span>,
         selectionTest: /\/pools/,
       },
       {
         label: t("menu.store"),
         link: "/apps",
-        icon: <Icon id="apps" className="h-6 w-6" />,
+        icon: <span>/</span>,
         selectionTest: /\/apps/,
         badge: <AppsBadge appsLink="/apps" />,
       },
       {
         label: t("menu.more"),
-        icon: <Icon id="dots-three-vertical" className="h-6 w-6" />,
+        icon: <span>/</span>,
         link: "/",
         showMore: true,
       },
@@ -291,7 +290,7 @@ const MainLayoutWrapper: FunctionComponent<{
       {
         label: t("menu.help"),
         link: "https://support.osmosis.zone/",
-        icon: <Icon id="help-circle" className="h-6 w-6" />,
+        icon: <span>/</span>,
         amplitudeEvent: [EventName.Sidebar.supportClicked] as AmplitudeEvent,
       },
       {
@@ -299,19 +298,19 @@ const MainLayoutWrapper: FunctionComponent<{
         link:
           osmosisWallet?.walletInfo?.governanceUrl ??
           "https://wallet.keplr.app/chains/osmosis?tab=governance",
-        icon: <Icon id="vote" className="h-6 w-6" />,
+        icon: <span>/</span>,
         amplitudeEvent: [EventName.Sidebar.voteClicked] as AmplitudeEvent,
       },
       {
         label: t("menu.info"),
         link: "https://www.datalenses.zone/chain/osmosis/overview",
-        icon: <Icon id="chart" className="h-6 w-6" />,
+        icon: <span>/</span>,
         amplitudeEvent: [EventName.Sidebar.infoClicked] as AmplitudeEvent,
       },
       {
         label: t("menu.featureRequests"),
         link: "https://forum.osmosis.zone/c/site-feedback/2",
-        icon: <Icon id="gift" className="h-6 w-6" />,
+        icon: <span>/</span>,
       },
     ],
     [t, osmosisWallet?.walletInfo?.governanceUrl]
