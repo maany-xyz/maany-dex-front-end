@@ -31,7 +31,7 @@ export const MainLayout = observer(
         <div className={"bg-osmoverse-400"}>
           {/*Navbar*/}
           <div className={"bg-osmoverse-400 px-2 py-[10px] h-[72px] z-[91]"}>
-            <div className="rounded-full overflow-hidden w-[98vw]">
+            <div className="rounded-full overflow-hidden w-[99vw]">
               {/* Original Osmosis NavBar*/}
               {/*<NavBar*/}
               {/*  className="ml:0"*/}
@@ -46,7 +46,7 @@ export const MainLayout = observer(
             <div className="inset-y-0 z-40 flex w-sidebar flex-col overflow-y-auto overflow-x-hidden bg-osmoverse-400 px-2 md:hidden">
               <div
                 className={
-                  "bg-osmoverse-900 px-2 pb-2 pt-4 rounded-2xl mb-2 h-full w-full"
+                  "bg-osmoverse-900 px-2 pb-2 pt-4 rounded-3xl mb-2 h-full w-full"
                 }
               >
                 {!isMobile && (
@@ -87,7 +87,7 @@ export const MainLayout = observer(
             </div>
 
             {/*Content*/}
-            <div className="ml-0 rounded-2xl flex flex-col flex-1 overflow-y-scroll bg-osmoverse-900 mr-2 mb-2">
+            <div className="ml-0 rounded-3xl flex flex-col flex-1 overflow-y-scroll bg-osmoverse-900 mr-2 mb-2">
               {children}
             </div>
           </div>

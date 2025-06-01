@@ -11,7 +11,7 @@ export const MaanyNavbar: FunctionComponent<Props> = ({ className }) => {
   return (
     <div
       className={classNames(
-        "fixed z-[90] bg-osmoverse-900 justify-center rounded-full flex h-navbar w-[98vw] place-content-between items-center px-2 lg:gap-5 md:h-navbar-mobile md:w-full md:place-content-start md:px-2",
+        "fixed z-[90] bg-osmoverse-900 justify-center rounded-full flex h-navbar w-[99vw] place-content-between items-center px-2 lg:gap-5 md:h-navbar-mobile md:w-full md:place-content-start md:px-2",
         className
       )}
     >
