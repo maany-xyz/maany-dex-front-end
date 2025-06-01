@@ -41,8 +41,9 @@ const Home = () => {
 
   return (
     <main className="relative flex overflow-auto pb-2 pt-8 h-content md:h-content-mobile">
-      <div className="fixed inset-0 h-full w-full overflow-y-scroll bg-cover xl:static">
-        <div className="absolute inset-0 top-[104px] flex h-auto w-full justify-center md:top-0">
+      {/* Investigate to know why this div was fixed*/}
+      <div className="w-full h-full flex flex-col items-center">
+        <div>
           <div className="flex w-[512px] flex-col gap-4 lg:mx-auto md:mt-5 md:w-full md:px-5">
             {featureFlags.swapsAdBanner && <SwapAdsBanner />}
             {/** Hydration issues need to be investigated before this client wrapper can be removed. */}

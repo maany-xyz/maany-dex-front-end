@@ -50,13 +50,12 @@ import { useNewApps } from "~/hooks/use-new-apps";
 import { WalletSelectProvider } from "~/hooks/use-wallet-select";
 import { ExternalLinkModal, handleExternalLink } from "~/modals";
 import { SEO } from "~/next-seo.config";
-import { api } from "~/utils/trpc";
+import { StoreProvider, useStore } from "~/stores";
+import { api } from "~/utils/trpc"; // Note: for some reason, the above two icons were displaying black backgrounds when using sprite SVG.
 
-// Note: for some reason, the above two icons were displaying black backgrounds when using sprite SVG.
 import dayjsLocaleEs from "../localizations/dayjs-locale-es.js";
 import dayjsLocaleKo from "../localizations/dayjs-locale-ko.js";
 import en from "../localizations/en.json";
-import { StoreProvider, useStore } from "../stores";
 
 dayjs.extend(relativeTime);
 dayjs.extend(advancedFormat);
