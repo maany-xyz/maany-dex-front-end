@@ -75,14 +75,14 @@
     font-weight: 500;
     font-size: 2rem;
     line-height: 100%;
-    letter-spacing: 0px;
+    letter-spacing: 0;
   }
   .MH7 {
     font-family: MaanyMedium, ui-sans-serif, system-ui;
     font-weight: 500;
     font-size: 1.5rem;
     line-height: 100%;
-    letter-spacing: 0px;
+    letter-spacing: 0;
   }
   h1 {
     @apply text-h1 font-h1;
