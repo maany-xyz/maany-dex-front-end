@@ -7,7 +7,6 @@ import { useCallback, useState } from "react";
 import { AllPoolsTable } from "~/components/complex/all-pools-table";
 import { MyPoolsCardsGrid } from "~/components/complex/my-pools-card-grid";
 import { MyPositionsSection } from "~/components/complex/my-positions-section";
-import { PoolsOverview } from "~/components/overview/pools";
 import { EventName } from "~/config";
 import {
   useAmplitudeAnalytics,
@@ -28,8 +27,7 @@ const Pools: NextPage = observer(function () {
   const { chainId } = chainStore.osmosis;
   const account = accountStore.getWallet(accountStore.osmosisChainId);
 
-  const [poolsOverviewRef, { height: poolsOverviewHeight }] =
-    useDimension<HTMLDivElement>();
+  const [_, { height: poolsOverviewHeight }] = useDimension<HTMLDivElement>();
 
   const [myPoolsRef, { height: myPoolsHeight }] =
     useDimension<HTMLDivElement>();
@@ -121,51 +119,49 @@ const Pools: NextPage = observer(function () {
   }, [createPoolConfig, account]);
 
   return (
-    <main className="m-auto max-w-container px-8 md:px-3">
+    <main className="m-auto max-w-container px-0 md:px-0">
+      <div className={"w-1 h-13"} />
+      <span className={"MH4 text-osmoverse-400"}>Pools</span>
       <NextSeo
         title={t("seo.pools.title")}
         description={t("seo.pools.description")}
       />
-      <CreatePoolModal
-        isOpen={isCreatingPool}
-        onRequestClose={useCallback(() => setIsCreatingPool(false), [])}
-        title={t("pools.createPool.title")}
-        createPoolConfig={createPoolConfig}
-        isSendingMsg={account?.txTypeInProgress !== ""}
-        onCreatePool={onCreatePool}
-      />
-      {addLiquidityModalPoolId && (
-        <AddLiquidityModal
-          title={t("addLiquidity.titleInPool", {
-            poolId: addLiquidityModalPoolId,
-          })}
-          poolId={addLiquidityModalPoolId}
-          isOpen={true}
-          onRequestClose={() => setAddLiquidityModalPoolId(null)}
+      <div className={"min-w-container"}>
+        <CreatePoolModal
+          isOpen={isCreatingPool}
+          onRequestClose={useCallback(() => setIsCreatingPool(false), [])}
+          title={t("pools.createPool.title")}
+          createPoolConfig={createPoolConfig}
+          isSendingMsg={account?.txTypeInProgress !== ""}
+          onCreatePool={onCreatePool}
         />
-      )}
-      <section className="pb-10 pt-8 md:pb-5 md:pt-4" ref={poolsOverviewRef}>
-        <PoolsOverview
-          className="mx-auto"
-          setIsCreatingPool={useCallback(() => setIsCreatingPool(true), [])}
-        />
-      </section>
-      {account?.address && (
-        <section className="pb-[3.75rem]" ref={myPositionsRef}>
-          <h5>{t("clPositions.yourPositions")}</h5>
-          <MyPositionsSection />
+        {addLiquidityModalPoolId && (
+          <AddLiquidityModal
+            title={t("addLiquidity.titleInPool", {
+              poolId: addLiquidityModalPoolId,
+            })}
+            poolId={addLiquidityModalPoolId}
+            isOpen={true}
+            onRequestClose={() => setAddLiquidityModalPoolId(null)}
+          />
+        )}
+        {account?.address && (
+          <section className="pb-[3.75rem]" ref={myPositionsRef}>
+            <h5>{t("clPositions.yourPositions")}</h5>
+            <MyPositionsSection />
+          </section>
+        )}
+        <section className="pb-[3.75rem] mt-6" ref={myPoolsRef}>
+          <h5 className="md:px-3">{t("pools.myPools")}</h5>
+          <MyPoolsCardsGrid />
         </section>
-      )}
-      <section className="pb-[3.75rem]" ref={myPoolsRef}>
-        <h5 className="md:px-3">{t("pools.myPools")}</h5>
-        <MyPoolsCardsGrid />
-      </section>
-      <section>
-        <AllPoolsTable
-          topOffset={myPositionsHeight + myPoolsHeight + poolsOverviewHeight}
-          {...quickActionProps}
-        />
-      </section>
+        <section>
+          <AllPoolsTable
+            topOffset={myPositionsHeight + myPoolsHeight + poolsOverviewHeight}
+            {...quickActionProps}
+          />
+        </section>
+      </div>
     </main>
   );
 });

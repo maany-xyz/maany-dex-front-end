@@ -219,6 +219,12 @@ const MainLayoutWrapper: FunctionComponent<{
         icon: <span>/</span>,
         selectionTest: /\/assets/,
       },
+        {
+            label: t("menu.pools"),
+            link: "/pools",
+            icon: <span>/</span>,
+            selectionTest: /\/pools/,
+        },
       {
         label: t("menu.portfolio"),
         link: "/portfolio",
@@ -250,12 +256,6 @@ const MainLayoutWrapper: FunctionComponent<{
             amplitudeEvent: [EventName.Sidebar.stakeClicked] as AmplitudeEvent,
           },
       ...conditionalMenuItems,
-      {
-        label: t("menu.pools"),
-        link: "/pools",
-        icon: <span>/</span>,
-        selectionTest: /\/pools/,
-      },
       {
         label: t("menu.store"),
         link: "/apps",

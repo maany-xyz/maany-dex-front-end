@@ -271,7 +271,7 @@ module.exports = {
         13: "3.25rem",
       },
       maxWidth: {
-        container: "70rem",
+        container: "60rem",
         clipboard: "32.5rem",
         modal: "42rem",
         35: "35%",
