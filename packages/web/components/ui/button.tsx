@@ -63,6 +63,8 @@ export interface ButtonProps
   asChild?: boolean;
   isLoading?: boolean;
   loadingText?: ReactNode;
+  titleClassName?: string;
+  title?: string;
   classes?: Partial<Record<"spinnerContainer" | "spinner", string>>;
 }
 
@@ -76,11 +78,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       isLoading,
       loadingText,
       classes,
+      titleClassName,
+      title,
       ...props
     },
     ref
   ) => {
     const Comp = asChild ? Slot : "button";
+    console.log(title);
     return (
       <Comp
         className={classNames(buttonVariants({ variant, size, className }))}
@@ -104,12 +109,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                   loadingText
                 )}
               </>
-            ) : !!props?.title ? (
-              <span className={"MH7"}>{props.title}</span>
+            ) : !!title ? (
+              <span className={titleClassName ?? "MH7"}>{title}</span>
             ) : (
               props.children
             )}
           </div>
+        ) : !!title ? (
+          <span className={titleClassName ?? "MH7"}>{title}</span>
         ) : (
           props.children
         )}
@@ -197,9 +204,9 @@ export const ChartButton: FunctionComponent<{
     <Button
       size="sm"
       className={classNames(
-        "flex cursor-pointer items-center justify-center !bg-osmoverse-800 px-2 text-caption  hover:!bg-osmoverse-900",
+        "flex cursor-pointer items-center justify-center !bg-osmoverse-400 px-2 text-caption  hover:!bg-osmoverse-500",
         {
-          "!bg-osmoverse-600": props.selected,
+          "!bg-wosmongton-700": props.selected,
         }
       )}
       onClick={props.onClick}
@@ -210,10 +217,12 @@ export const ChartButton: FunctionComponent<{
           label={props.alt}
           width={16}
           height={16}
-          className="text-osmoverse-300"
+          className="text-osmoverse-900"
         />
       )}
-      {isLabel && props.label}
+      {isLabel && (
+        <span className="MBodyS px-2">{props.label?.toLowerCase()}</span>
+      )}
     </Button>
   );
 };

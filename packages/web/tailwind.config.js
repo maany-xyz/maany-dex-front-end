@@ -98,6 +98,7 @@ module.exports = {
         lightGrey: "#B7B7B7",
       },
       error: "#EF3456",
+      success: "#5CFF5C",
       missionError: "#EF3456",
       superfluid: "#8A86FF",
       supercharged: "#64C5EE",
