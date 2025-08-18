@@ -117,6 +117,7 @@ interface AssetFieldsetInputProps {
   outputValue?: ReactNode;
   page?: EventPage;
   wrapperClassNames?: string;
+  inputClassName?: string;
   placeholder?: string;
   disabled?: boolean;
 }
@@ -133,6 +134,7 @@ const AssetFieldsetInput = forwardRef<
       outputValue,
       wrapperClassNames,
       placeholder = "0",
+      inputClassName = "",
       disabled = false,
       ...rest
     },
@@ -154,7 +156,10 @@ const AssetFieldsetInput = forwardRef<
         {outputValue || (
           <input
             ref={ref}
-            className="w-full flex-1 bg-transparent placeholder:text-osmoverse-600"
+            className={classNames(
+              ["w-full flex-1 bg-transparent placeholder:text-osmoverse-600"],
+              inputClassName
+            )}
             style={{
               font: "inherit",
             }}
@@ -238,7 +243,7 @@ const AssetFieldsetTokenSelector = ({
     <>
       <button
         type="button"
-        className="flex max-w-[50%] items-center gap-1 rounded-[64px] bg-osmoverse-850 py-3 pl-3 pr-4 transition-colors hover:bg-osmoverse-800 sm:px-3"
+        className="flex max-w-[50%] items-center gap-1 rounded-[64px] bg-osmoverse-900 py-2 pl-2 pr-4 transition-colors hover:bg-osmoverse-800 sm:px-3"
         onClick={(e) => {
           e.stopPropagation();
           e.currentTarget.blur();
@@ -263,7 +268,7 @@ const AssetFieldsetTokenSelector = ({
             className="h-10 w-10 rounded-full sm:h-6 sm:w-6"
           />
         )}
-        <span className="ml-2 truncate text-h5 font-h5 sm:ml-1 sm:text-h6 sm:font-h6">
+        <span className="ml-2 truncate MBodyXL text-osmoverse-400">
           {selectedCoinDenom}
         </span>
         <div className="flex h-6 w-6 items-center justify-center">

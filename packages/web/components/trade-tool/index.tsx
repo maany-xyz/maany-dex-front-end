@@ -57,9 +57,68 @@ export const TradeTool: FunctionComponent<TradeToolProps> = observer(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tab]);
 
+    const content = useMemo(() => {
+      switch (tab) {
+        case SwapToolTab.BUY:
+          return (
+            <PlaceLimitTool
+              key="tool-buy"
+              page={page}
+              initialBaseDenom={previousTrade?.baseDenom}
+              initialQuoteDenom={previousTrade?.quoteDenom}
+              onOrderSuccess={(baseDenom, quoteDenom) => {
+                setPreviousTrade({
+                  sendTokenDenom: quoteDenom ?? "",
+                  outTokenDenom: baseDenom ?? "",
+                  baseDenom: baseDenom ?? "",
+                  quoteDenom: quoteDenom ?? "",
+                });
+              }}
+            />
+          );
+        case SwapToolTab.SELL:
+          return (
+            <PlaceLimitTool
+              key="tool-sell"
+              page={page}
+              initialBaseDenom={previousTrade?.baseDenom}
+              initialQuoteDenom={previousTrade?.quoteDenom}
+              onOrderSuccess={(baseDenom, quoteDenom) => {
+                setPreviousTrade({
+                  sendTokenDenom: baseDenom ?? "",
+                  outTokenDenom: quoteDenom ?? "",
+                  baseDenom: baseDenom ?? "",
+                  quoteDenom: quoteDenom ?? "",
+                });
+              }}
+            />
+          );
+        case SwapToolTab.SWAP:
+        default:
+          return (
+            <SwapTool
+              useOtherCurrencies
+              useQueryParams
+              page={page}
+              onSwapSuccess={({ sendTokenDenom, outTokenDenom }) => {
+                setPreviousTrade({
+                  sendTokenDenom,
+                  outTokenDenom,
+                  baseDenom: previousTrade?.baseDenom ?? "",
+                  quoteDenom: previousTrade?.quoteDenom ?? "",
+                });
+              }}
+              initialSendTokenDenom={previousTrade?.sendTokenDenom}
+              initialOutTokenDenom={previousTrade?.outTokenDenom}
+              {...swapToolProps}
+            />
+          );
+      }
+    }, [page, swapToolProps, tab, previousTrade, setPreviousTrade]);
+
     return (
       <div className="flex flex-col gap-3">
-        <div className="relative flex flex-col gap-3 rounded-3xl bg-osmoverse-900 px-5 pt-5 pb-3 sm:px-4 sm:pt-4 sm:pb-2">
+        <div className="relative flex flex-col gap-3 rounded-3xl px-5 pt-5 pb-3 sm:px-4 sm:pt-4 sm:pb-2">
           <div className="flex w-full items-center justify-between md:gap-2">
             <SwapToolTabs activeTab={tab} setTab={setTab} />
             <div className="flex items-center gap-2">
@@ -71,64 +130,7 @@ export const TradeTool: FunctionComponent<TradeToolProps> = observer(
               )}
             </div>
           </div>
-          {useMemo(() => {
-            switch (tab) {
-              case SwapToolTab.BUY:
-                return (
-                  <PlaceLimitTool
-                    key="tool-buy"
-                    page={page}
-                    initialBaseDenom={previousTrade?.baseDenom}
-                    initialQuoteDenom={previousTrade?.quoteDenom}
-                    onOrderSuccess={(baseDenom, quoteDenom) => {
-                      setPreviousTrade({
-                        sendTokenDenom: quoteDenom ?? "",
-                        outTokenDenom: baseDenom ?? "",
-                        baseDenom: baseDenom ?? "",
-                        quoteDenom: quoteDenom ?? "",
-                      });
-                    }}
-                  />
-                );
-              case SwapToolTab.SELL:
-                return (
-                  <PlaceLimitTool
-                    key="tool-sell"
-                    page={page}
-                    initialBaseDenom={previousTrade?.baseDenom}
-                    initialQuoteDenom={previousTrade?.quoteDenom}
-                    onOrderSuccess={(baseDenom, quoteDenom) => {
-                      setPreviousTrade({
-                        sendTokenDenom: baseDenom ?? "",
-                        outTokenDenom: quoteDenom ?? "",
-                        baseDenom: baseDenom ?? "",
-                        quoteDenom: quoteDenom ?? "",
-                      });
-                    }}
-                  />
-                );
-              case SwapToolTab.SWAP:
-              default:
-                return (
-                  <SwapTool
-                    useOtherCurrencies
-                    useQueryParams
-                    page={page}
-                    onSwapSuccess={({ sendTokenDenom, outTokenDenom }) => {
-                      setPreviousTrade({
-                        sendTokenDenom,
-                        outTokenDenom,
-                        baseDenom: previousTrade?.baseDenom ?? "",
-                        quoteDenom: previousTrade?.quoteDenom ?? "",
-                      });
-                    }}
-                    initialSendTokenDenom={previousTrade?.sendTokenDenom}
-                    initialOutTokenDenom={previousTrade?.outTokenDenom}
-                    {...swapToolProps}
-                  />
-                );
-            }
-          }, [page, swapToolProps, tab, previousTrade, setPreviousTrade])}
+          {content}
         </div>
 
         {wallet?.isWalletConnected && (

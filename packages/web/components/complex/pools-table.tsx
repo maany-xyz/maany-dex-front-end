@@ -414,9 +414,13 @@ export const PoolsTable = (props: PropsWithChildren<PoolsTableProps>) => {
         >
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
+              <tr key={headerGroup.id} className="bg-osmoverse-900">
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} colSpan={header.colSpan}>
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className="MBodyS   text-osmoverse-600 "
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -452,11 +456,12 @@ export const PoolsTable = (props: PropsWithChildren<PoolsTableProps>) => {
                   key={row.id}
                   onClick={() => router.push("/pool/" + row.original.id)}
                 >
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map((cell, cIndex) => (
                     <td
                       className={classNames(
                         "transition-colors duration-200 ease-in-out xs:px-1",
-                        isPreviousData && isFetching && "cursor-progress"
+                        isPreviousData && isFetching && "cursor-progress",
+                        cIndex === 0 && "min-w-[28rem]"
                       )}
                       key={cell.id}
                     >

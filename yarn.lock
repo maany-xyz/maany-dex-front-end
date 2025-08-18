@@ -5476,6 +5476,11 @@
   resolved "https://registry.yarnpkg.com/@nx/nx-darwin-arm64/-/nx-darwin-arm64-18.2.4.tgz#594dd0d475293f5767eb68a6ec5cb7d1b54a3177"
   integrity sha512-RYhMImghdyHmwnbNoR2CkLz4Opj9EmuHY3lMfsorg+T4wIOql/iXACrqjnreN7Hy9myJDo1EIbYZ4x8VSxFWtA==
 
+"@nx/nx-darwin-arm64@^21.1.2":
+  version "21.1.2"
+  resolved "https://registry.yarnpkg.com/@nx/nx-darwin-arm64/-/nx-darwin-arm64-21.1.2.tgz#d88abfbff793b50e6613bf670e7f7d2dbfe3089c"
+  integrity sha512-9dO32jd+h7SrvQafJph6b7Bsmp2IotTE0w7dAGb4MGBQni3JWCXaxlMMpWUZXWW1pM5uIkFJO5AASW4UOI7w2w==
+
 "@nx/nx-darwin-x64@18.2.4":
   version "18.2.4"
   resolved "https://registry.yarnpkg.com/@nx/nx-darwin-x64/-/nx-darwin-x64-18.2.4.tgz#7d3e498440067643ee5f938d7e1ac41ac29761d1"

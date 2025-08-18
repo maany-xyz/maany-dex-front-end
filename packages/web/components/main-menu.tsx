@@ -1,6 +1,5 @@
 import { Popover } from "@headlessui/react";
-import { runIfFn } from "@osmosis-labs/utils";
-import { isFunction } from "@osmosis-labs/utils";
+import { isFunction, runIfFn } from "@osmosis-labs/utils";
 import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,8 +13,7 @@ import {
 
 import { Pill } from "~/components/indicators/pill";
 import { AmplitudeEvent } from "~/config";
-import { useTranslation, useWindowSize } from "~/hooks";
-import { useAmplitudeAnalytics } from "~/hooks";
+import { useAmplitudeAnalytics, useTranslation, useWindowSize } from "~/hooks";
 
 export type MainLayoutMenu = {
   label: string;
@@ -34,7 +32,9 @@ export const MainMenu: FunctionComponent<{
   menus: MainLayoutMenu[];
   secondaryMenuItems: MainLayoutMenu[];
   className?: string;
-}> = ({ menus, className, secondaryMenuItems }) => {
+  ItemComponent?: FunctionComponent<MenuLinkProps>;
+}> = ({ menus, className, secondaryMenuItems, ItemComponent }) => {
+  const LinkComponent = ItemComponent || MenuLink;
   return (
     <ul
       className={classNames(
@@ -48,12 +48,12 @@ export const MainMenu: FunctionComponent<{
         return (
           <li
             key={index}
-            className="flex cursor-pointer items-center"
+            className="cursor-pointer"
             onClick={(e) => {
               if (isFunction(link)) link(e);
             }}
           >
-            <MenuLink
+            <LinkComponent
               href={link}
               secondaryLogo={secondaryLogo}
               selectionTest={selectionTest}
@@ -73,7 +73,7 @@ export const MainMenu: FunctionComponent<{
                   />
                 )
               }
-            </MenuLink>
+            </LinkComponent>
           </li>
         );
       })}
@@ -82,14 +82,20 @@ export const MainMenu: FunctionComponent<{
 };
 
 type MaybeRenderProp<P> = React.ReactNode | ((props: P) => React.ReactNode);
-
-const MenuLink: FunctionComponent<{
+type MenuLinkProps = {
   href: string | any;
   secondaryLogo?: React.ReactNode;
   children: MaybeRenderProp<{ showSubTitle: boolean; selected: boolean }>;
   selectionTest?: RegExp;
   showMore?: boolean;
-}> = ({ href, children, secondaryLogo, selectionTest, showMore }) => {
+};
+const MenuLink: FunctionComponent<MenuLinkProps> = ({
+  href,
+  children,
+  secondaryLogo,
+  selectionTest,
+  showMore,
+}) => {
   const router = useRouter();
   const [showSubTitle, setShowSubTitle] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -122,7 +128,7 @@ const MenuLink: FunctionComponent<{
       passHref
       target={selectionTest ? "_self" : "_blank"}
       className={classNames("flex w-full items-center", {
-        "h-12 px-5 py-3 md:px-3 md:py-2": !showMore,
+        "h-12 px-0 py-3 md:py-2": !showMore,
       })}
       onMouseEnter={() => shouldShowHover && setShowSubTitle(true)}
       onMouseLeave={() => shouldShowHover && setShowSubTitle(false)}
@@ -133,18 +139,70 @@ const MenuLink: FunctionComponent<{
   );
 };
 
+export const SideBarMenuLink: FunctionComponent<MenuLinkProps> = ({
+  href,
+  children,
+  secondaryLogo,
+  selectionTest,
+  showMore,
+}) => {
+  const router = useRouter();
+  const [showSubTitle, setShowSubTitle] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  const { isMobile } = useWindowSize();
+
+  useEffect(() => {
+    setIsMounted(true); // component has mounted. Needed because of NextJS SSR.
+  }, []);
+
+  const shouldShowHover = !!secondaryLogo;
+
+  const onClickLink = (e: React.MouseEvent) => {
+    // If href is a string, do nothing and let the Link handle the navigation
+    if (!isFunction(href)) return;
+
+    e.preventDefault();
+    href(e);
+  };
+
+  if (isMounted && showMore && isMobile) {
+    return null; // Don't render more menu on mobile per discussion with Syed.
+  }
+
+  const selected = selectionTest ? selectionTest.test(router.pathname) : false;
+
+  return (
+    <div>
+      <Link
+        href={typeof href === "string" ? href : "/"}
+        passHref
+        target={selectionTest ? "_self" : "_blank"}
+        className={classNames(
+          "flex w-full items-center px-0 h-12 py-3 md:px-3 md:py-2"
+        )}
+        onMouseEnter={() => shouldShowHover && setShowSubTitle(true)}
+        onMouseLeave={() => shouldShowHover && setShowSubTitle(false)}
+        onClick={onClickLink}
+      >
+        {runIfFn(children, { showSubTitle, selected })}
+      </Link>
+    </div>
+  );
+};
+
 const MorePopover: FunctionComponent<{
   item: MainLayoutMenu;
   secondaryMenus: MainLayoutMenu[];
 }> = ({ item, secondaryMenus }) => {
   return (
-    <Popover className="relative flex h-full w-full items-center px-5 py-3">
+    <Popover className="relative flex h-full w-full items-center py-3 px-0">
       {({ open }) => (
         <>
           <Popover.Button className="focus:outline-none">
             <MenuItemContent menu={item} selected={open} />
           </Popover.Button>
-          <Popover.Panel className="absolute bottom-full -left-1 flex w-full flex-col gap-2 rounded-3xl bg-osmoverse-800 py-2 px-2">
+          <Popover.Panel className="absolute bottom-full flex w-full flex-col gap-2 rounded-3xl bg-osmoverse-800 py-2 px-0">
             {secondaryMenus.map((menu: MainLayoutMenu) => {
               const { link, selectionTest, secondaryLogo, showMore } = menu;
               return (
@@ -180,10 +238,10 @@ const MenuItemContent: React.FC<{
   return (
     <div
       className={classNames(
-        "flex h-7 w-full items-center gap-4 transition-all duration-100 ease-in-out md:gap-2",
+        "flex h-7 w-full flex-1 items-center gap-2 transition-all duration-100 ease-in-out md:gap-2 rounded-3xl center px-6 py-6",
         selected
-          ? "text-white-high"
-          : "text-osmoverse-300 hover:text-white-high"
+          ? "text-wosmongton-700 border border-wosmongton-700 hover:border-white-high"
+          : "text-osmoverse-400 hover:text-white-high"
       )}
       onClick={() => {
         if (amplitudeEvent) {
@@ -191,7 +249,7 @@ const MenuItemContent: React.FC<{
         }
       }}
     >
-      <div className="relative h-6 w-6">
+      <div className="relative h-6 w-3">
         {/* Main Icon */}
         <div
           className={classNames(

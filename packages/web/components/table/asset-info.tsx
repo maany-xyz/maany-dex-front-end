@@ -21,7 +21,6 @@ import {
 } from "react";
 import { useMount } from "react-use";
 
-import { HighlightsCategories } from "~/components/assets/highlights-categories";
 import { AssetCell } from "~/components/table/cells/asset";
 import { EventName } from "~/config";
 import {
@@ -32,7 +31,6 @@ import {
   useUserWatchlist,
   useWindowSize,
 } from "~/hooks";
-import { useConst } from "~/hooks/use-const";
 import { useShowPreviewAssets } from "~/hooks/use-show-preview-assets";
 import { ActivateUnverifiedTokenConfirmation } from "~/modals";
 import { useStore } from "~/stores";
@@ -42,7 +40,6 @@ import { formatPretty } from "~/utils/formatter";
 import { api, RouterInputs, RouterOutputs } from "~/utils/trpc";
 import { removeQueryParam } from "~/utils/url";
 
-import { AssetCategoriesSelectors } from "../assets/categories";
 import { HistoricalPriceSparkline, PriceChange } from "../assets/price";
 import { SubscriptDecimal } from "../chart";
 import { NoSearchResultsSplash, SearchBox } from "../input";
@@ -70,25 +67,7 @@ export const AssetsInfoTable: FunctionComponent<{
 
   // category
   const [selectedCategory, setCategory] = useState<string | undefined>();
-  const selectCategory = useCallback(
-    (category: string, highlight?: string) => {
-      setCategory(category);
-      logEvent([
-        EventName.Assets.categorySelected,
-        {
-          assetCategory: category,
-          highlight,
-        },
-      ]);
-    },
-    [logEvent]
-  );
-  const unselectCategory = useCallback(() => {
-    setCategory(undefined);
-  }, []);
-  const onSelectTopGainers = useCallback(() => {
-    selectCategory("topGainers", "topGainers");
-  }, [selectCategory]);
+
   const categories = useMemo(
     () =>
       selectedCategory && selectedCategory !== "topGainers"
@@ -206,18 +185,7 @@ export const AssetsInfoTable: FunctionComponent<{
     }
     return assets;
   }, [selectedCategory, assetPagesData]);
-  const clientCategoryImageSamples = useMemo(() => {
-    if (selectedCategory === "topGainers") {
-      const topGainers = assetsData
-        .filter((asset) => asset.isVerified)
-        .slice(undefined, 3);
-      return {
-        topGainers: topGainers
-          .map((asset) => asset.coinImageUrl)
-          .filter((url): url is string => !!url),
-      };
-    } else return { topGainers: [] };
-  }, [assetsData, selectedCategory]);
+
   const noSearchResults = Boolean(searchQuery) && !assetsData.length;
 
   // Define columns
@@ -231,8 +199,7 @@ export const AssetsInfoTable: FunctionComponent<{
           <AssetCell
             {...original}
             warnUnverified={showUnverifiedAssets && !original.isVerified}
-            isInUserWatchlist={watchListDenoms.includes(original.coinDenom)}
-            onClickWatchlist={() => toggleWatchAssetDenom(original.coinDenom)}
+            isInUserWatchlist={false}
           />
         ),
       }),
@@ -413,10 +380,8 @@ export const AssetsInfoTable: FunctionComponent<{
   // and save on performance and memory.
   // As the user scrolls, invisible rows are removed from the DOM.
   // collect height of elements above table to inform virtualizer
-  const [highlightsRef, { height: highlightsHeight }] =
-    useDimension<HTMLDivElement>();
-  const [categoriesRef, { height: categoriesHeight }] =
-    useDimension<HTMLDivElement>();
+  const [_, { height: highlightsHeight }] = useDimension<HTMLDivElement>();
+  const [__, { height: categoriesHeight }] = useDimension<HTMLDivElement>();
   const [searchRef, { height: searchBoxHeight }] =
     useDimension<HTMLInputElement>();
 
@@ -475,30 +440,19 @@ export const AssetsInfoTable: FunctionComponent<{
           setVerifiedAsset(null);
         }}
       />
-      <section ref={highlightsRef} className="mb-4">
-        <HighlightsCategories
-          className="lg:-mx-4 lg:px-4"
-          isCategorySelected={!!selectedCategory}
-          onSelectAllTopGainers={onSelectTopGainers}
+      <div className={"w-1 h-13"} />
+      <span className={"MH4 text-osmoverse-400"}>Assets</span>
+      <div className={"flex items-center justify-center"}>
+        <SearchBox
+          ref={searchRef}
+          className="my-4 !w-[33.25rem] xl:!w-96 md:!w-full"
+          currentValue={searchQuery?.query ?? ""}
+          onInput={onSearchInput}
+          placeholder={t("assets.table.search")}
+          debounce={500}
+          size={"medium"}
         />
-      </section>
-      <section ref={categoriesRef} className="mb-4">
-        <AssetCategoriesSelectors
-          selectedCategory={selectedCategory}
-          hiddenCategories={useConst(["new", "topGainers"])}
-          onSelectCategory={selectCategory}
-          unselectCategory={unselectCategory}
-          clientCategoryImageSamples={clientCategoryImageSamples}
-        />
-      </section>
-      <SearchBox
-        ref={searchRef}
-        className="my-4 !w-[33.25rem] xl:!w-96 md:!w-full"
-        currentValue={searchQuery?.query ?? ""}
-        onInput={onSearchInput}
-        placeholder={t("assets.table.search")}
-        debounce={500}
-      />
+      </div>
       <table
         className={classNames(
           "mt-3",
@@ -514,7 +468,7 @@ export const AssetsInfoTable: FunctionComponent<{
                 <th
                   className={classNames(
                     // apply to all columns
-                    "sm:w-fit",
+                    "sm:w-fit bg-osmoverse-900 text-osmoverse-600 MBodyS",
                     {
                       // defines column widths after first column
                       "w-28": index !== 0,

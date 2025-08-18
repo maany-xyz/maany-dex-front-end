@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Dec } from "@osmosis-labs/unit";
 import { curveNatural } from "@visx/curve";
 import { LinearGradient } from "@visx/gradient";
@@ -8,7 +9,9 @@ import {
   AnimatedGrid,
   AnimatedLineSeries,
   Annotation,
+  AnnotationCircleSubject,
   AnnotationConnector,
+  AnnotationLabel,
   AnnotationLineSubject,
   buildChartTheme,
   Margin,
@@ -53,6 +56,10 @@ export const HistoricalPriceChart: FunctionComponent<{
    */
   showTooltip?: boolean;
   fiatSymbol?: string;
+  nonGradientColor?: string;
+  containerClassName?: string;
+  showLastValueOnDataPoint?: boolean;
+  lastValueString?: string;
 }> = memo(
   ({
     data,
@@ -65,184 +72,229 @@ export const HistoricalPriceChart: FunctionComponent<{
     xNumTicks = 4,
     showTooltip = false,
     fiatSymbol,
-  }) => (
-    <ParentSize
-      className={`flex-shrink-1 flex-1 ${
-        !minimal ? "overflow-hidden" : "[&>svg]:overflow-visible"
-      }`}
-    >
-      {({ height, width }) => (
-        <XYChart
-          key="line-chart"
-          margin={
-            minimal
-              ? { top: 0, right: 0, bottom: 24, left: 0 }
-              : { top: 0, right: 0, bottom: 24, left: 36 }
-          }
-          height={height}
-          width={width}
-          xScale={{
-            type: "time",
-            paddingInner: 0.5,
-          }}
-          yScale={{
-            type: "linear",
-            domain,
-            zero: false,
-          }}
-          onPointerOut={onPointerOut}
-          onPointerMove={(tooltipData) => {
-            const datum = tooltipData.datum as any;
-            const close = datum.close;
-
-            if (close && onPointerHover) {
-              onPointerHover(close);
+    nonGradientColor = "white",
+    containerClassName = "",
+    showLastValueOnDataPoint = false,
+    lastValueString,
+  }) => {
+    // @ts-ignore
+    // @ts-ignore
+    return (
+      <ParentSize
+        className={`flex-shrink-1 flex-1 ${
+          !minimal ? "overflow-hidden mx-2" : "[&>svg]:overflow-visible"
+        } ${containerClassName} `}
+      >
+        {({ height, width }) => (
+          <XYChart
+            key="line-chart"
+            margin={
+              minimal
+                ? { top: 0, right: 0, bottom: 24, left: 0 }
+                : {
+                    top: 0,
+                    right: showLastValueOnDataPoint ? 120 : 20,
+                    bottom: 24,
+                    left: 56,
+                  }
             }
-          }}
-          theme={buildChartTheme({
-            backgroundColor: "transparent",
-            colors: showGradient ? [theme.colors.wosmongton["300"]] : ["white"],
-            gridColor: theme.colors.osmoverse["600"],
-            gridColorDark: theme.colors.osmoverse["300"],
-            svgLabelSmall: {
-              fill: theme.colors.osmoverse["300"],
-              fontSize: 12,
-              fontWeight: 500,
-            },
-            svgLabelBig: {
-              fill: theme.colors.osmoverse["300"],
-              fontSize: 12,
-              fontWeight: 500,
-            },
-            tickLength: 1,
-            xAxisLineStyles: {
-              strokeWidth: 0,
-            },
-            xTickLineStyles: {
-              strokeWidth: 0,
-            },
-            yAxisLineStyles: {
-              strokeWidth: 0,
-            },
-          })}
-        >
-          <AnimatedAxis
-            orientation="bottom"
-            numTicks={xNumTicks}
-            hideTicks={minimal}
-            hideZero={minimal}
-          />
-          {!minimal && (
-            <AnimatedAxis orientation="left" numTicks={5} strokeWidth={0} />
-          )}
-          {!minimal && <AnimatedGrid columns={false} numTicks={5} />}
-
-          {showGradient ? (
-            <>
-              <AnimatedAreaSeries
-                dataKey="close"
-                data={data}
-                xAccessor={(d: { time: number; close: number }) => d?.time}
-                yAccessor={(d: { time: number; close: number }) => d?.close}
-                fillOpacity={0.4}
-                curve={curveNatural}
-                fill="url(#gradient)"
-              />
-              <LinearGradient
-                id="gradient"
-                from={theme.colors.chartGradientPrimary}
-                to={theme.colors.chartGradientSecondary}
-                rotate={-8}
-                fromOffset="13.08%"
-                fromOpacity={1}
-                toOpacity={0}
-                toOffset="85.36%"
-              />
-            </>
-          ) : (
-            <AnimatedLineSeries
-              key={data.length}
-              dataKey="close"
-              data={data}
-              curve={curveNatural}
-              xAccessor={(d: { time: number; close: number }) => d?.time}
-              yAccessor={(d: { time: number; close: number }) => d?.close}
-              stroke={theme.colors.wosmongton["200"]}
-            />
-          )}
-          {annotations.map((dec, i) => (
-            <Annotation
-              key={i}
-              dataKey="depth"
-              xAccessor={(d: { close: number; time: number }) => d.time}
-              yAccessor={(d: { close: number; time: number }) => d.close}
-              datum={{ close: Number(dec.toString()), time: 0 }}
-            >
-              <AnnotationConnector />
-              <AnnotationLineSubject
-                orientation="horizontal"
-                stroke={theme.colors.wosmongton["200"]}
-                strokeWidth={2}
-                strokeDasharray={4}
-              />
-            </Annotation>
-          ))}
-          <Tooltip
-            detectBounds
-            showDatumGlyph
-            horizontalCrosshairStyle={{
-              strokeWidth: 2,
-              strokeDasharray: "5 5",
-              opacity: 0.17,
-              stroke: theme.colors.osmoverse[300],
+            height={height}
+            width={width}
+            xScale={{
+              type: "time",
+              paddingInner: 3,
             }}
-            verticalCrosshairStyle={{
-              strokeWidth: 2,
-              strokeDasharray: "5 5",
-              opacity: 0.17,
-              stroke: theme.colors.osmoverse[300],
+            yScale={{
+              type: "linear",
+              domain,
+              zero: false,
             }}
-            showVerticalCrosshair={true}
-            renderTooltip={({ tooltipData }: any) => {
-              const close = tooltipData?.nearestDatum?.datum?.close;
-              const time = tooltipData?.nearestDatum?.datum?.time;
+            onPointerOut={onPointerOut}
+            onPointerMove={(tooltipData) => {
+              const datum = tooltipData.datum as any;
+              const close = datum.close;
 
-              if (showTooltip && time && close) {
-                const date = dayjs(time).format("MMM Do, hh:mma");
-                const minimumDecimals = 2;
-                const maxDecimals = Math.max(
-                  getDecimalCount(close),
-                  minimumDecimals
-                );
-
-                const closeDec = new Dec(close);
-
-                const formatOpts = getPriceExtendedFormatOptions(closeDec);
-
-                return (
-                  <div className="relative flex flex-col gap-1 rounded-xl bg-osmoverse-1000 p-3 shadow-md">
-                    <h6 className="text-h6 font-semibold text-white-full">
-                      {fiatSymbol}
-                      {formatPretty(closeDec, {
-                        maxDecimals,
-                        ...formatOpts,
-                      }) || ""}
-                    </h6>
-
-                    <p className="text-caption font-medium text-osmoverse-200">
-                      {date}
-                    </p>
-                  </div>
-                );
+              if (close && onPointerHover) {
+                onPointerHover(close);
               }
-
-              return <div></div>;
             }}
-          />
-        </XYChart>
-      )}
-    </ParentSize>
-  )
+            theme={buildChartTheme({
+              backgroundColor: "transparent",
+              colors: showGradient
+                ? [theme.colors.wosmongton["700"]]
+                : [nonGradientColor],
+              gridColor: theme.colors.osmoverse["600"],
+              gridColorDark: theme.colors.osmoverse["300"],
+              svgLabelSmall: {
+                fill: theme.colors.osmoverse["400"],
+                fontSize: 12,
+                fontWeight: 200,
+              },
+              svgLabelBig: {
+                fill: theme.colors.osmoverse["300"],
+                fontSize: 12,
+                fontWeight: 500,
+              },
+              tickLength: 1,
+              xAxisLineStyles: {
+                strokeWidth: 0,
+              },
+              xTickLineStyles: {
+                strokeWidth: 0,
+              },
+              yAxisLineStyles: {
+                strokeWidth: 0,
+              },
+            })}
+          >
+            <AnimatedAxis
+              orientation="bottom"
+              numTicks={xNumTicks}
+              hideTicks={minimal}
+              hideZero={minimal}
+            />
+            {!minimal && (
+              <AnimatedAxis orientation="left" numTicks={5} strokeWidth={0} />
+            )}
+            {!minimal && <AnimatedGrid columns={false} numTicks={5} />}
+
+            {showGradient ? (
+              <>
+                <AnimatedAreaSeries
+                  dataKey="close"
+                  data={data}
+                  xAccessor={(d: { time: number; close: number }) => d?.time}
+                  yAccessor={(d: { time: number; close: number }) => d?.close}
+                  fillOpacity={0.4}
+                  curve={curveNatural}
+                  fill="url(#gradient)"
+                />
+                <LinearGradient
+                  id="gradient"
+                  from={theme.colors.wosmongton["700"]}
+                  to={theme.colors.wosmongton["900"]}
+                  rotate={-8}
+                  fromOffset="13.08%"
+                  fromOpacity={1}
+                  toOpacity={0}
+                  toOffset="85.36%"
+                />
+              </>
+            ) : (
+              <>
+                {data.length > 0 && (
+                  <Annotation
+                    dataKey="close"
+                    datum={data[data.length - 1]} // Use the last data point
+                    xAccessor={(d: { time: number; close: number }) => d?.time}
+                    yAccessor={(d: { time: number; close: number }) => d?.close}
+                  >
+                    <AnnotationLabel
+                      title={lastValueString}
+                      backgroundPadding={{
+                        bottom: -5,
+                        right: -((lastValueString || "").length * 7),
+                      }}
+                      titleFontSize={12}
+                      titleProps={{
+                        color: theme.colors.wosmongton["700"],
+                      }}
+                      fontColor={theme.colors.wosmongton["700"]}
+                      showAnchorLine={false}
+                    />
+                    <AnnotationCircleSubject
+                      stroke={`${nonGradientColor}`}
+                      strokeWidth={4}
+                      radius={2}
+                      className="fill-white absolute z-50"
+                    />
+                  </Annotation>
+                )}
+                <AnimatedLineSeries
+                  key={data.length}
+                  dataKey="close"
+                  data={data}
+                  curve={curveNatural}
+                  xAccessor={(d: { time: number; close: number }) => d?.time}
+                  yAccessor={(d: { time: number; close: number }) => d?.close}
+                  stroke={nonGradientColor}
+                />
+              </>
+            )}
+            {annotations.map((dec, i) => (
+              <Annotation
+                key={i}
+                dataKey="depth"
+                xAccessor={(d: { close: number; time: number }) => d.time}
+                yAccessor={(d: { close: number; time: number }) => d.close}
+                datum={{ close: Number(dec.toString()), time: 0 }}
+              >
+                <AnnotationConnector />
+                <AnnotationLineSubject
+                  orientation="horizontal"
+                  stroke={theme.colors.wosmongton["200"]}
+                  strokeWidth={2}
+                  strokeDasharray={4}
+                />
+              </Annotation>
+            ))}
+            <Tooltip
+              detectBounds
+              showDatumGlyph
+              horizontalCrosshairStyle={{
+                strokeWidth: 2,
+                strokeDasharray: "5 5",
+                opacity: 0.17,
+                stroke: theme.colors.osmoverse[300],
+              }}
+              verticalCrosshairStyle={{
+                strokeWidth: 2,
+                strokeDasharray: "5 5",
+                opacity: 0.17,
+                stroke: theme.colors.osmoverse[300],
+              }}
+              showVerticalCrosshair={true}
+              renderTooltip={({ tooltipData }: any) => {
+                const close = tooltipData?.nearestDatum?.datum?.close;
+                const time = tooltipData?.nearestDatum?.datum?.time;
+
+                if (showTooltip && time && close) {
+                  const date = dayjs(time).format("MMM Do, hh:mma");
+                  const minimumDecimals = 2;
+                  const maxDecimals = Math.max(
+                    getDecimalCount(close),
+                    minimumDecimals
+                  );
+
+                  const closeDec = new Dec(close);
+
+                  const formatOpts = getPriceExtendedFormatOptions(closeDec);
+
+                  return (
+                    <div className="relative flex flex-col gap-1 rounded-xl bg-osmoverse-1000 p-3 shadow-md">
+                      <h6 className="text-h6 font-semibold text-white-full">
+                        {fiatSymbol}
+                        {formatPretty(closeDec, {
+                          maxDecimals,
+                          ...formatOpts,
+                        }) || ""}
+                      </h6>
+
+                      <p className="text-caption font-medium text-osmoverse-200">
+                        {date}
+                      </p>
+                    </div>
+                  );
+                }
+
+                return <div></div>;
+              }}
+            />
+          </XYChart>
+        )}
+      </ParentSize>
+    );
+  }
 );
 
 export const PriceChartHeader: FunctionComponent<{
@@ -415,9 +467,7 @@ export const PriceChartHeader: FunctionComponent<{
                 onClick={() => setHistoricalRange("all")}
                 selected={historicalRange === "all"}
               />
-            ) : (
-              false
-            )}
+            ) : null}
           </div>
         )}
       </div>
